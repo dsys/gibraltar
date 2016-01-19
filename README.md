@@ -1,6 +1,6 @@
 # gibraltar
 
-**A better way to brew Caffe.** Named after the world's greatest espresso drink.
+*A better way to brew Caffe.* Named after the world's greatest espresso drink.
 
 ## Installation
 
