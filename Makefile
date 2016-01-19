@@ -44,4 +44,7 @@ versions/$(COMMIT)/distribute: versions/$(COMMIT)
 		install_name_tool -add_rpath $(CUDA_DIR)/lib $$f; \
 		mv $$f $${f%.*}; \
 	done
-	install_name_tool -add_rpath versions/$(COMMIT)/distribute/lib versions/$(COMMIT)/distribute/python/caffe/_caffe.so
+	install_name_tool \
+		-change @rpath/libcaffe.so @loader_path/../../lib/libcaffe.so \
+		-add_rpath $(CUDA_DIR)/lib versions/$(COMMIT)/distribute/python/caffe/_caffe.so \
+		versions/$(COMMIT)/distribute/python/caffe/_caffe.so
