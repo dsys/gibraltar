@@ -1,13 +1,13 @@
 # ==============================================================================
 # config
 
-.PHONY: default build download test use
+.PHONY: all build download gen-sh link-makefile link-version test
 
-default: use
+all: link-makefile build link-version gen-sh
 
 BUILD_FLAGS ?= -j8
 COMMIT ?= 4115385deb3b907fcd428ac0ab53b694d741a3c4
-CONFIG ?= config/OS\ X.make # OS X only, for now.
+CONFIG ?= OS\ X
 CUDA_DIR ?= /usr/local/cuda
 REPOSITORY ?= https://github.com/rbgirshick/caffe-fast-rcnn.git
 
@@ -18,25 +18,44 @@ build: versions/$(COMMIT)/distribute
 
 download: versions/$(COMMIT)
 
+gen-sh:
+	@- rm -f env.sh
+	$(MAKE) env.sh
+
+link-makefile:
+	@- rm -f config/current
+	$(MAKE) config/current
+
+link-version:
+	@- rm -f versions/current
+	$(MAKE) versions/current
+
 test: build
 	cd versions/$(COMMIT) && $(MAKE) test $(BUILD_FLAGS)
 	cd versions/$(COMMIT) && $(MAKE) runtest
 	cd versions/$(COMMIT) && $(MAKE) pytest
 
-use: build
-	@- rm -f current
-	@- ln -s versions/$(COMMIT)/distribute current
-	@- echo "Using commit $(COMMIT) from $(REPOSITORY)"
-
 # ==============================================================================
 # file targets
+
+config/current:
+	@- ln -s $(CONFIG).make config/current
+	@- echo "Using config $(CONFIG)"
+
+versions/current:
+	@- ln -s versions/$(COMMIT)/distribute current
+	@- echo "Using commit $(COMMIT) from $(REPOSITORY)"
 
 versions/$(COMMIT):
 	git clone $(REPOSITORY) versions/$(COMMIT)
 	cd versions/$(COMMIT) && git checkout $(COMMIT)
 
+env.sh:
+	$(eval $@_LIB_PATH := \`pwd\`/versions/current/lib:$(CUDA_DIR)/lib)
+	@- echo "export PATH=\`pwd\`/versions/current/bin:\$$PATH\nexport LD_LIBRARY_PATH=$($@_LIB_PATH):\$$LD_LIBRARY_PATH \nexport DYLD_LIBRARY_PATH=$($@_LIB_PATH):\$$DYLD_LIBRARY_PATH" > use.sh
+
 versions/$(COMMIT)/distribute: versions/$(COMMIT)
-	cp $(CONFIG) versions/$(COMMIT)/Makefile.config
+	ln -s ../../config/current versions/$(COMMIT)/Makefile.config
 	cd versions/$(COMMIT) && $(MAKE) all $(BUILD_FLAGS)
 	cd versions/$(COMMIT) && $(MAKE) pycaffe
 	cd versions/$(COMMIT) && $(MAKE) distribute
@@ -46,5 +65,5 @@ versions/$(COMMIT)/distribute: versions/$(COMMIT)
 	done
 	install_name_tool \
 		-change @rpath/libcaffe.so @loader_path/../../lib/libcaffe.so \
-		-add_rpath $(CUDA_DIR)/lib versions/$(COMMIT)/distribute/python/caffe/_caffe.so \
+		
 		versions/$(COMMIT)/distribute/python/caffe/_caffe.so
