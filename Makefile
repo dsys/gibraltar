@@ -51,8 +51,8 @@ versions/$(COMMIT):
 	cd versions/$(COMMIT) && git checkout $(COMMIT)
 
 env.sh:
-	$(eval $@_LIB_PATH := \`dirname $BASH_SOURCE\`/versions/current/lib:$(CUDA_DIR)/lib)
-	@- echo "export PATH=\`dirname $$BASH_SOURCE\`/versions/current/bin:\$$PATH\nexport LD_LIBRARY_PATH=$($@_LIB_PATH):\$$LD_LIBRARY_PATH \nexport DYLD_LIBRARY_PATH=$($@_LIB_PATH):\$$DYLD_LIBRARY_PATH" > env.sh
+	$(eval $@_LIB_PATH := \`dirname \$$$$BASH_SOURCE\`/versions/current/lib:$(CUDA_DIR)/lib)
+	@- echo "export PATH=\`dirname \$$BASH_SOURCE\`/versions/current/bin:\$$PATH\nexport LD_LIBRARY_PATH=$($@_LIB_PATH):\$$LD_LIBRARY_PATH \nexport DYLD_LIBRARY_PATH=$($@_LIB_PATH):\$$DYLD_LIBRARY_PATH" > env.sh
 
 versions/$(COMMIT)/distribute: versions/$(COMMIT)
 	ln -s ../../config/current versions/$(COMMIT)/Makefile.config
