@@ -59,11 +59,4 @@ versions/$(COMMIT)/distribute: versions/$(COMMIT)
 	cd versions/$(COMMIT) && $(MAKE) all $(BUILD_FLAGS)
 	cd versions/$(COMMIT) && $(MAKE) pycaffe
 	cd versions/$(COMMIT) && $(MAKE) distribute
-	for f in versions/$(COMMIT)/distribute/bin/*.bin; do \
-		install_name_tool -add_rpath $(CUDA_DIR)/lib $$f; \
-		mv $$f $${f%.*}; \
-	done
-	install_name_tool \
-		-change @rpath/libcaffe.so @loader_path/../../lib/libcaffe.so \
-		
-		versions/$(COMMIT)/distribute/python/caffe/_caffe.so
+	for f in versions/$(COMMIT)/distribute/bin/*.bin; do mv $$f $${f%.*}; done
