@@ -1,15 +1,18 @@
 # ==============================================================================
 # config
 
-.PHONY: all build download gen-sh link-makefile link-version test
+.PHONY: all build download gen-sh link-makefile link-version test deps
 
 all: link-makefile build link-version gen-sh
 
-BUILD_FLAGS ?= -j8
-COMMIT ?= 4115385deb3b907fcd428ac0ab53b694d741a3c4
-CONFIG ?= OS\ X
-CUDA_DIR ?= /usr/local/cuda
-REPOSITORY ?= https://github.com/rbgirshick/caffe-fast-rcnn.git
+BUILD_FLAGS       ?= -j8
+COMMIT            ?= 4115385deb3b907fcd428ac0ab53b694d741a3c4
+CONFIG            ?= OS\ X
+CUDA_DIR          ?= /usr/local/cuda
+REPOSITORY        ?= https://github.com/rbgirshick/caffe-fast-rcnn.git
+
+BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy numpy opencv
+BREW_INSTALL_ARGS ?= --fresh -vd
 
 # ==============================================================================
 # phony targets
@@ -34,6 +37,13 @@ test: build
 	cd versions/$(COMMIT) && $(MAKE) test $(BUILD_FLAGS)
 	cd versions/$(COMMIT) && $(MAKE) runtest
 	cd versions/$(COMMIT) && $(MAKE) pytest
+
+deps:
+	@- echo 'P.S. - Remember to run `brew update`.'
+	brew install                                   $(BREW_ARGS) $(BREW_DEPS)
+	brew install --build-from-source --with-python $(BREW_ARGS) protobuf
+	brew install --build-from-source               $(BREW_ARGS) boost boost-python
+	brew cask install cuda
 
 # ==============================================================================
 # file targets
