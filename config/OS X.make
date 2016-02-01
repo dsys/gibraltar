@@ -1,12 +1,21 @@
 # Refer to http://caffe.berkeleyvision.org/installation.html
 
 # The following variables are set via Gibraltar's Makefile:
-# BLAS_INCLUDE, CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN
+# CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN, TEST_GPU
 
 CUSTOM_CXX := clang++
 
+BUILD_DIR := build
+DISTRIBUTE_DIR := distribute
+
+# Enable pretty builds.
+Q ?= @
+
 # Use OpenBLAS because OS X's Accelerate Framework is buggy.
-BLAS := open
+BLAS         ?= open
+BLAS_DIR     ?= /usr/local/opt/openblas
+BLAS_INCLUDE ?= $(BLAS_DIR)/include
+BLAS_LIB     ?= $(BLAS_DIR)/lib
 
 # We need to be able to find Python.h and numpy/arrayobject.h.
 WITH_PYTHON_LAYER := 1
@@ -18,12 +27,3 @@ PYTHON_LIB := /usr/local/Cellar/python/2.7.10_2/Frameworks/Python.framework/Vers
 # Whatever else you find you need goes here.
 INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
 LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
-
-BUILD_DIR := build
-DISTRIBUTE_DIR := distribute
-
-# The ID of the GPU that 'make runtest' will use to run unit tests.
-TEST_GPUID := 0
-
-# enable pretty build (comment to see full commands)
-Q ?= @
