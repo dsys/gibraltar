@@ -1,22 +1,14 @@
 # Refer to http://caffe.berkeleyvision.org/installation.html
 
-# USE_CUDNN := 1
-# CPU_ONLY := 1
+# The following variables are set via Gibraltar's Makefile:
+# BLAS_DIR, CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN
 
-# To customize your choice of compiler, uncomment and set the following.
-# The default for Linux is g++ and the default for OSX is clang++.
 CUSTOM_CXX := clang++
 
-# CUDA directory contains bin/ and lib/ directories that we need.
-# CUDA_DIR := /usr/local/cuda
-
-# CUDA architecture setting: going with all of them.
-# CUDA_ARCH := -gencode arch=compute_30,code=sm_30
-
-# BLAS choices: atlas, mkl, open
+# Use OpenBLAS because OS X's Accelerate.framework is buggy.
 BLAS := open
-BLAS_INCLUDE := /usr/local/opt/openblas/include
-BLAS_LIB := /usr/local/opt/openblas/lib
+BLAS_INCLUDE := $(BLAS_DIR)/include
+BLAS_LIB := $(BLAS_DIR)/lib
 
 # We need to be able to find Python.h and numpy/arrayobject.h.
 WITH_PYTHON_LAYER := 1

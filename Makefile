@@ -8,6 +8,7 @@ all: build link
 export CPU_ONLY   ?= 0
 export USE_CUDNN  ?= 1
 
+export BLAS_DIR   ?= /usr/local/opt/openblas
 export CUDA_DIR   ?= /usr/local/cuda
 export CUDA_ARCH  ?= -gencode arch=compute_30,code=sm_30
 
@@ -30,12 +31,12 @@ build: $(VERSION_DIR)/distribute
 download: $(VERSION_DIR)
 
 link:
-	@- rm -f bin lib include python
-	@- ln -s $(VERSION_DIR)/distribute/lib lib
-	@- ln -s $(VERSION_DIR)/distribute/bin bin
-	@- ln -s $(VERSION_DIR)/distribute/include include
-	@- ln -s $(VERSION_DIR)/distribute/python python
-	@- ln -fs $(CUDA_DIR)/lib/libcudart.dylib lib/libcudart.dylib
+	rm -f bin lib include python
+	ln -s $(VERSION_DIR)/distribute/lib lib
+	ln -s $(VERSION_DIR)/distribute/bin bin
+	ln -s $(VERSION_DIR)/distribute/include include
+	ln -s $(VERSION_DIR)/distribute/python python
+	ln -fs $(CUDA_DIR)/lib/libcudart.dylib lib/libcudart.dylib
 
 test: build
 	cd $(VERSION_DIR) && $(MAKE) test $(BUILD_FLAGS)
