@@ -1,5 +1,4 @@
-<img src="https://raw.githubusercontent.com/pavlovml/gibraltar/master/resources/logo.png" alt="gibraltar logo" width="300" />
-# gibraltar
+<img src="https://raw.githubusercontent.com/pavlovml/gibraltar/master/resources/logo.png" alt="gibraltar" width="320" />
 
 *A better way to brew [Caffe](http://caffe.berkeleyvision.org/).* Named after the world's greatest espresso drink.
 
