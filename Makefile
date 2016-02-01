@@ -12,7 +12,15 @@ export TEST_GPU   ?= 0
 export CUDA_DIR   ?= /usr/local/cuda
 export CUDA_ARCH  ?= -gencode arch=compute_30,code=sm_30
 
-BUILD_FLAGS       ?= -j8
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+CONFIG ?= config/OS\ X.make
+BUILD_FLAGS ?= -j$(shell sysctl -n hw.ncpu)
+else ifeq ($(UNAME), Linux)
+CONFIG ?= config/Linux.make
+BUILD_FLAGS ?= -j$(shell nproc)
+endif
+
 COMMIT            ?= master
 GITHUB_REPO       ?= BVLC/caffe
 
@@ -21,14 +29,6 @@ VERSION_DIR       ?= versions/$(GITHUB_REPO)/$(COMMIT)
 
 BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy python numpy opencv
 BREW_INSTALL_ARGS ?= --fresh -vd
-
-UNAME := $(shell uname)
-ifeq ($(UNAME), Darwin)
-CONFIG ?= config/OS\ X.make
-endif
-ifeq ($(UNAME), Linux)
-CONFIG ?= config/Linux.make
-endif
 
 # ==============================================================================
 # phony targets
