@@ -5,7 +5,7 @@
 ## Installation
 
     $ make deps
-    $ make
+    $ make all
 
 *Really.*
 

@@ -1,7 +1,7 @@
 # ==============================================================================
 # config
 
-.PHONY: all build download link test deps
+.PHONY: all build clean clean-all clean-links deps download link test
 
 all: build link
 
@@ -35,21 +35,14 @@ endif
 
 build: $(VERSION_DIR)/distribute
 
-download: $(VERSION_DIR)
+clean: clean-links
+	@- rm -rf $(VERSION_DIR)
 
-link:
+clean-all: clean-links
+	@- rm -rf versions/*
+
+clean-links:
 	@- rm -f bin lib include python
-	@ ln -s $(VERSION_DIR)/distribute/lib lib
-	@ ln -s $(VERSION_DIR)/distribute/bin bin
-	@ ln -s $(VERSION_DIR)/distribute/include include
-	@ ln -s $(VERSION_DIR)/distribute/python python
-	@ ln -fs $(CUDA_DIR)/lib/libcudart.dylib lib/libcudart.dylib
-	@- echo 'Using caffe at $(VERSION_DIR)'
-
-test: build
-	cd $(VERSION_DIR) && $(MAKE) test $(BUILD_FLAGS)
-	cd $(VERSION_DIR) && $(MAKE) runtest
-	cd $(VERSION_DIR) && $(MAKE) pytest
 
 deps:
 ifeq ($(UNAME), Darwin)
@@ -62,6 +55,21 @@ ifeq ($(UNAME), Darwin)
 else
 	@- echo 'Only for OS X, for now.'
 endif
+
+download: $(VERSION_DIR)
+
+link: clean-links
+	@ ln -s $(VERSION_DIR)/distribute/lib lib
+	@ ln -s $(VERSION_DIR)/distribute/bin bin
+	@ ln -s $(VERSION_DIR)/distribute/include include
+	@ ln -s $(VERSION_DIR)/distribute/python python
+	@ ln -fs $(CUDA_DIR)/lib/libcudart.dylib lib/libcudart.dylib
+	@- echo 'Using caffe at $(VERSION_DIR)'
+
+test: build
+	cd $(VERSION_DIR) && $(MAKE) test $(BUILD_FLAGS)
+	cd $(VERSION_DIR) && $(MAKE) runtest
+	cd $(VERSION_DIR) && $(MAKE) pytest
 
 # ==============================================================================
 # file targets
