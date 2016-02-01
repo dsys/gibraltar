@@ -5,22 +5,22 @@
 
 all: build link
 
-export CPU_ONLY     ?= 0
-export USE_CUDNN    ?= 1
-export TEST_GPU     ?= 0
+export CPU_ONLY   ?= 0
+export USE_CUDNN  ?= 1
+export TEST_GPU   ?= 0
 
-export CUDA_DIR     ?= /usr/local/cuda
-export CUDA_ARCH    ?= -gencode arch=compute_30,code=sm_30
+export CUDA_DIR   ?= /usr/local/cuda
+export CUDA_ARCH  ?= -gencode arch=compute_30,code=sm_30
 
-BUILD_FLAGS         ?= -j8
-COMMIT              ?= master
-GITHUB_REPO         ?= BVLC/caffe
+BUILD_FLAGS       ?= -j8
+COMMIT            ?= master
+GITHUB_REPO       ?= BVLC/caffe
 
-GIT_REMOTE          ?= https://github.com/$(GITHUB_REPO).git
-VERSION_DIR         ?= versions/$(GITHUB_REPO)/$(COMMIT)
+GIT_REMOTE        ?= https://github.com/$(GITHUB_REPO).git
+VERSION_DIR       ?= versions/$(GITHUB_REPO)/$(COMMIT)
 
-BREW_DEPS           ?= openblas glog gflags hdf5 lmdb leveldb szip snappy python numpy opencv
-BREW_INSTALL_ARGS   ?= --fresh -vd
+BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy python numpy opencv
+BREW_INSTALL_ARGS ?= --fresh -vd
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
@@ -51,7 +51,6 @@ test: build
 	cd $(VERSION_DIR) && $(MAKE) runtest
 	cd $(VERSION_DIR) && $(MAKE) pytest
 
-# OS X only, for now
 deps:
 ifeq ($(UNAME), Darwin)
 	@- echo 'P.S. - Remember to run `brew update`.'
