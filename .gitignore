@@ -1,3 +1,5 @@
 versions
-current
-env.sh
+lib
+bin
+include
+python
