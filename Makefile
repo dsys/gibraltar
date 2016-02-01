@@ -1,15 +1,23 @@
 # ==============================================================================
 # config
 
-.PHONY: all build download gen-sh link-makefile link-version test deps
+.PHONY: all build download link test deps
 
-all: link-makefile build link-version gen-sh
+all: build link
+
+export CPU_ONLY   ?= 0
+export USE_CUDNN  ?= 1
+
+export CUDA_DIR   ?= /usr/local/cuda
+export CUDA_ARCH  ?= -gencode arch=compute_30,code=sm_30
 
 BUILD_FLAGS       ?= -j8
-COMMIT            ?= 4115385deb3b907fcd428ac0ab53b694d741a3c4
+COMMIT            ?= master
 CONFIG            ?= OS\ X
-CUDA_DIR          ?= /usr/local/cuda
-REPOSITORY        ?= https://github.com/rbgirshick/caffe-fast-rcnn.git
+GITHUB_REPO       ?= BVLC/caffe
+
+GIT_REMOTE        ?= https://github.com/$(GITHUB_REPO).git
+VERSION_DIR       ?= versions/$(GITHUB_REPO)/$(COMMIT)
 
 BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy numpy opencv
 BREW_INSTALL_ARGS ?= --fresh -vd
@@ -17,32 +25,24 @@ BREW_INSTALL_ARGS ?= --fresh -vd
 # ==============================================================================
 # phony targets
 
-build: versions/$(COMMIT)/distribute
+build: $(VERSION_DIR)/distribute
 
-download: versions/$(COMMIT)
+download: $(VERSION_DIR)
 
-gen-sh:
-	@- rm -f env.sh
-	$(MAKE) env.sh
-
-link-makefile:
-	@- rm -f config/current
-	$(MAKE) config/current
-
-link-version:
-	@- rm -f versions/current
-	$(MAKE) versions/current
-
-link-cuda:
-	@- mkdir -p lib
-	@- rm -f lib/libcudart.dylib
-	@- ln -s $(CUDA_DIR)/libcudart.dylib lib/libcudart.dylib
+link:
+	@- rm -f bin lib include python
+	@- ln -s $(VERSION_DIR)/distribute/lib lib
+	@- ln -s $(VERSION_DIR)/distribute/bin bin
+	@- ln -s $(VERSION_DIR)/distribute/include include
+	@- ln -s $(VERSION_DIR)/distribute/python python
+	@- ln -fs $(CUDA_DIR)/lib/libcudart.dylib lib/libcudart.dylib
 
 test: build
-	cd versions/$(COMMIT) && $(MAKE) test $(BUILD_FLAGS)
-	cd versions/$(COMMIT) && $(MAKE) runtest
-	cd versions/$(COMMIT) && $(MAKE) pytest
+	cd $(VERSION_DIR) && $(MAKE) test $(BUILD_FLAGS)
+	cd $(VERSION_DIR) && $(MAKE) runtest
+	cd $(VERSION_DIR) && $(MAKE) pytest
 
+# OS X only, for now
 deps:
 	@- echo 'P.S. - Remember to run `brew update`.'
 	brew install                                   $(BREW_ARGS) $(BREW_DEPS)
@@ -53,21 +53,13 @@ deps:
 # ==============================================================================
 # file targets
 
-config/current:
-	@- ln -s $(CONFIG).make config/current
-	@- echo "Using config $(CONFIG)"
+$(VERSION_DIR):
+	git clone $(GIT_REMOTE) $(VERSION_DIR)
+	cd $(VERSION_DIR) && git checkout $(COMMIT)
 
-versions/current:
-	@- ln -s versions/$(COMMIT)/distribute current
-	@- echo "Using commit $(COMMIT) from $(REPOSITORY)"
-
-versions/$(COMMIT):
-	git clone $(REPOSITORY) versions/$(COMMIT)
-	cd versions/$(COMMIT) && git checkout $(COMMIT)
-
-versions/$(COMMIT)/distribute: versions/$(COMMIT)
-	ln -s ../../config/current versions/$(COMMIT)/Makefile.config
-	cd versions/$(COMMIT) && $(MAKE) all $(BUILD_FLAGS)
-	cd versions/$(COMMIT) && $(MAKE) pycaffe
-	cd versions/$(COMMIT) && $(MAKE) distribute
-	for f in versions/$(COMMIT)/distribute/bin/*.bin; do mv $$f $${f%.*}; done
+$(VERSION_DIR)/distribute: $(VERSION_DIR)
+	cp config/$(CONFIG).make $(VERSION_DIR)/Makefile.config
+	cd $(VERSION_DIR) && $(MAKE) all $(BUILD_FLAGS)
+	cd $(VERSION_DIR) && $(MAKE) pycaffe
+	cd $(VERSION_DIR) && $(MAKE) distribute
+	for f in $(VERSION_DIR)/distribute/bin/*.bin; do mv $$f $${f%.*}; done

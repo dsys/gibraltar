@@ -1,6 +1,6 @@
 # Refer to http://caffe.berkeleyvision.org/installation.html
 
-USE_CUDNN := 1
+# USE_CUDNN := 1
 # CPU_ONLY := 1
 
 # To customize your choice of compiler, uncomment and set the following.
@@ -8,10 +8,10 @@ USE_CUDNN := 1
 CUSTOM_CXX := clang++
 
 # CUDA directory contains bin/ and lib/ directories that we need.
-CUDA_DIR := /usr/local/cuda
+# CUDA_DIR := /usr/local/cuda
 
 # CUDA architecture setting: going with all of them.
-CUDA_ARCH := -gencode arch=compute_30,code=sm_30
+# CUDA_ARCH := -gencode arch=compute_30,code=sm_30
 
 # BLAS choices: atlas, mkl, open
 BLAS := open
