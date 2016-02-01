@@ -1,14 +1,12 @@
 # Refer to http://caffe.berkeleyvision.org/installation.html
 
 # The following variables are set via Gibraltar's Makefile:
-# BLAS_DIR, CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN
+# BLAS_INCLUDE, CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN
 
 CUSTOM_CXX := clang++
 
-# Use OpenBLAS because OS X's Accelerate.framework is buggy.
+# Use OpenBLAS because OS X's Accelerate Framework is buggy.
 BLAS := open
-BLAS_INCLUDE := $(BLAS_DIR)/include
-BLAS_LIB := $(BLAS_DIR)/lib
 
 # We need to be able to find Python.h and numpy/arrayobject.h.
 WITH_PYTHON_LAYER := 1

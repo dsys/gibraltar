@@ -5,23 +5,26 @@
 
 all: build link
 
-export CPU_ONLY   ?= 0
-export USE_CUDNN  ?= 1
+export CPU_ONLY     ?= 0
+export USE_CUDNN    ?= 1
 
-export BLAS_DIR   ?= /usr/local/opt/openblas
-export CUDA_DIR   ?= /usr/local/cuda
-export CUDA_ARCH  ?= -gencode arch=compute_30,code=sm_30
+export BLAS_DIR     ?= /usr/local/opt/openblas
+export BLAS_INCLUDE ?= $(BLAS_DIR)/include
+export BLAS_LIB     ?= $(BLAS_DIR)/lib
 
-BUILD_FLAGS       ?= -j8
-COMMIT            ?= master
-CONFIG            ?= OS\ X
-GITHUB_REPO       ?= BVLC/caffe
+export CUDA_DIR     ?= /usr/local/cuda
+export CUDA_ARCH    ?= -gencode arch=compute_30,code=sm_30
 
-GIT_REMOTE        ?= https://github.com/$(GITHUB_REPO).git
-VERSION_DIR       ?= versions/$(GITHUB_REPO)/$(COMMIT)
+BUILD_FLAGS         ?= -j8
+COMMIT              ?= master
+CONFIG              ?= OS\ X
+GITHUB_REPO         ?= BVLC/caffe
 
-BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy numpy opencv
-BREW_INSTALL_ARGS ?= --fresh -vd
+GIT_REMOTE          ?= https://github.com/$(GITHUB_REPO).git
+VERSION_DIR         ?= versions/$(GITHUB_REPO)/$(COMMIT)
+
+BREW_DEPS           ?= openblas glog gflags hdf5 lmdb leveldb szip snappy numpy opencv
+BREW_INSTALL_ARGS   ?= --fresh -vd
 
 # ==============================================================================
 # phony targets
