@@ -27,7 +27,7 @@ GITHUB_REPO       ?= BVLC/caffe
 GIT_REMOTE        ?= https://github.com/$(GITHUB_REPO).git
 VERSION_DIR       ?= versions/$(GITHUB_REPO)/$(COMMIT)
 
-BREW_DEPS         ?= openblas glog gflags hdf5 lmdb leveldb szip snappy python numpy opencv
+BREW_DEPS         ?= glog gflags hdf5 lmdb leveldb szip snappy python numpy opencv
 BREW_INSTALL_ARGS ?= --fresh -vd
 
 # ==============================================================================
@@ -57,6 +57,9 @@ else
 endif
 
 download: $(VERSION_DIR)
+
+install:
+	# TODO
 
 link: clean-links
 	@ ln -s $(VERSION_DIR)/distribute/lib lib

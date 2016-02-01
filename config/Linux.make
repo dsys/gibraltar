@@ -1,6 +1,6 @@
 ## Refer to http://caffe.berkeleyvision.org/installation.html
 
-# The following variables are set via Gibraltar's Makefile:
+# The following variables are set via gibraltar's Makefile:
 # CPU_ONLY, CUDA_DIR, CUDA_ARCH, USE_CUDNN, TEST_GPU
 
 CUSTOM_CXX := clang++
