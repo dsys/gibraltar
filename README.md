@@ -4,10 +4,12 @@
 
 ## Usage
 
-Each Caffe fork is brewed as a Docker container designed for use with nvidia-docker. Each are available on Docker Hub.
+Each Caffe fork is brewed as a Docker container designed for use with nvidia-docker. Each are available on Docker Hub as [pavlov/gibraltar](https://hub.docker.com/r/alexkern/gibraltar/tags/).
 
-* [BVLC official (master)](https://github.com/BVLC/caffe): [**pavlov/caffe-bvlc**](https://hub.docker.com/r/pavlov/caffe-bvlc/)
-* [Ross Girshick's faster-rcnn](https://github.com/rbgirshick/caffe-fast-rcnn/tree/faster-rcnn-upstream-33f2445): [**pavlov/caffe-faster-rcnn**](https://hub.docker.com/r/pavlov/caffe-faster-rcnn/)
+## Tags
+
+* **bvlc**: [BVLC official (master)](https://github.com/BVLC/caffe)
+* **faster-rcnn**: [Ross Girshick's faster-rcnn fork](https://github.com/rbgirshick/caffe-fast-rcnn/tree/faster-rcnn-upstream-33f2445)
 
 ## License
 

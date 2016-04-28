@@ -7,4 +7,4 @@ all: build
 build: $(TAGS)
 
 $(TAGS):
-	cd $@ && docker build -t pavlov/caffe-$@ .
+	cd $@ && docker build -t pavlov/gibraltar:$@ .
