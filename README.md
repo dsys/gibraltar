@@ -2,12 +2,12 @@
 
 *A better way to brew [Caffe](http://caffe.berkeleyvision.org/).* Named after the world's greatest espresso drink.
 
-## Installation
+## Usage
 
-    $ make deps
-    $ make all
+Each Caffe fork is brewed as a Docker container designed for use with nvidia-docker. Each are available on Docker Hub.
 
-*Really.*
+* [BVLC official (master)](https://github.com/BVLC/caffe): [**pavlov/caffe-bvlc**](https://hub.docker.com/r/pavlov/caffe-bvlc/)
+* [Ross Girshick's faster-rcnn](https://github.com/rbgirshick/caffe-fast-rcnn/tree/faster-rcnn-upstream-33f2445): [**pavlov/caffe-faster-rcnn**](https://hub.docker.com/r/pavlov/caffe-faster-rcnn/)
 
 ## License
 
