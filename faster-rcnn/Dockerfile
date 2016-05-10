@@ -1,11 +1,11 @@
 FROM nvidia/cuda:7.0-cudnn4-devel
 MAINTAINER Alex Kern <alex@pavlovml.com>
 
-ENV CAFFE_GIT_REMOTE https://github.com/rbgirshick/caffe-fast-rcnn.git
-ENV CAFFE_GIT_COMMIT faster-rcnn-upstream-33f2445
-ENV PATH /usr/local/caffe/bin:$PATH
-ENV LD_LIBRARY_PATH /usr/local/caffe/lib:$LD_LIBRARY_PATH
-ENV PYTHONPATH /usr/local/caffe/python:$PYTHONPATH
+ENV CAFFE_GIT_REMOTE=https://github.com/rbgirshick/caffe-fast-rcnn.git \
+    CAFFE_GIT_COMMIT=faster-rcnn-upstream-33f2445 \
+    PATH=/usr/local/caffe/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/local/caffe/lib:$LD_LIBRARY_PATH \
+    PYTHONPATH=/usr/local/caffe/python:$PYTHONPATH
 
 RUN apt-get update && \
     apt-get install -y \
