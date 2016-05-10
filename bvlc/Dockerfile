@@ -14,7 +14,7 @@ RUN apt-get update && \
       libopencv-dev liblmdb-dev libatlas-base-dev gfortran && \
     apt-get install -y --no-install-recommends libboost-all-dev && \
     apt-get install -y python-dev python-pip python-numpy python-scipy \
-      python-opencv cython libboost-python-dev && \
+      python-skimage python-opencv cython libboost-python-dev && \
     git clone $CAFFE_GIT_REMOTE caffe && \
     cd caffe && \
     git checkout $CAFFE_GIT_COMMIT
