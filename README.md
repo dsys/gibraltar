@@ -4,7 +4,7 @@
 
 ## Usage
 
-Each Caffe fork is brewed as a Docker container designed for use with nvidia-docker. Each are available on Docker Hub as [pavlov/gibraltar](https://hub.docker.com/r/alexkern/gibraltar/tags/).
+Each Caffe fork is brewed as a Docker container designed for use with nvidia-docker. Each are available on Docker Hub as [pavlov/gibraltar](https://hub.docker.com/r/pavlov/gibraltar/tags/).
 
 ## Tags
 
