@@ -13,7 +13,7 @@ RUN apt-get update && \
       libgoogle-glog-dev libprotobuf-dev libleveldb-dev libsnappy-dev \
       libopencv-dev liblmdb-dev libatlas-base-dev gfortran && \
     apt-get install -y --no-install-recommends libboost-all-dev && \
-    apt-get install -y python-dev python-pip python-numpy python-scipy && \
+    apt-get install -y python-dev python-pip python-numpy python-scipy \
       python-opencv cython libboost-python-dev && \
     git clone $CAFFE_GIT_REMOTE caffe && \
     cd caffe && \
