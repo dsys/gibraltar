@@ -13,8 +13,8 @@ RUN apt-get update && \
       libgoogle-glog-dev libprotobuf-dev libleveldb-dev libsnappy-dev \
       libopencv-dev liblmdb-dev libatlas-base-dev gfortran && \
     apt-get install -y --no-install-recommends libboost-all-dev && \
-    apt-get install -y python-dev python-pip libboost-python-dev && \
-    pip install cython numpy && \
+    apt-get install -y python-dev python-pip python-numpy python-scipy && \
+      python-opencv cython libboost-python-dev && \
     git clone $CAFFE_GIT_REMOTE caffe && \
     cd caffe && \
     git checkout $CAFFE_GIT_COMMIT
@@ -23,10 +23,10 @@ COPY Makefile.config caffe/Makefile.config
 
 RUN cd caffe && \
     make all -j$(nproc) && \
+    pip install --upgrade -r python/requirements.txt && \
     make pycaffe distribute && \
     mv distribute /usr/local/caffe && \
     cd /usr/local/caffe && \
     mv bin/caffe.bin bin/caffe && \
     for f in bin/*.bin; do mv $f bin/caffe_$(basename $f .bin); done && \
-    pip install --upgrade -r python/requirements.txt && \
     rm -rf /caffe /var/lib/apt/lists/*
